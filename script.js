@@ -1,11 +1,52 @@
-// Mobile menu functionality
-const menuBtn = document.querySelector('.menu-btn');
-const navLinks = document.querySelector('.nav-links');
+// Mobile Navigation
+const navToggle = document.querySelector('.nav-toggle');
+const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
 
-menuBtn.addEventListener('click', () => {
-    menuBtn.classList.toggle('active');
-    navLinks.classList.toggle('active');
+// Toggle menu
+navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('active');
+    navMenu.classList.toggle('active');
 });
+
+// Close menu when clicking links
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+    });
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+    }
+});
+
+// Active link highlighting
+function setActiveLink() {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.clientHeight;
+        const id = section.getAttribute('id');
+        
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${id}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+}
+
+window.addEventListener('scroll', setActiveLink);
 
 // Project data
 const projects = [
@@ -55,12 +96,12 @@ filterButtons.forEach(button => {
 
 // Load filtered projects with animation
 function loadFilteredProjects(projectsToLoad) {
+    const projectGrid = document.querySelector('.project-grid');
     projectGrid.innerHTML = ''; // Clear existing projects
     
     projectsToLoad.forEach((project, index) => {
         const projectCard = document.createElement('div');
         projectCard.className = 'project-card';
-        projectCard.style.animation = `fadeIn 0.5s ease forwards ${index * 0.2}s`;
         
         projectCard.innerHTML = `
             <div class="project-image">
@@ -80,8 +121,9 @@ function loadFilteredProjects(projectsToLoad) {
         
         // Add animation class after a brief delay
         setTimeout(() => {
-            projectCard.classList.add('animate');
-        }, 100);
+            projectCard.style.opacity = '1';
+            projectCard.style.transform = 'translateY(0)';
+        }, index * 200);
     });
 }
 
@@ -105,9 +147,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
 
         // Close mobile menu if open
-        if (navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            menuBtn.classList.remove('active');
+        if (navMenu.classList.contains('active')) {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
         }
     });
 });
