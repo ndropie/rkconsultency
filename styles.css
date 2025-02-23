@@ -439,7 +439,7 @@ nav {
 }
 
 @media (max-width: 768px) {
-    .experience-badge {
+      .experience-badge {
         bottom: -50px;
         right: 20px;
         transform: none;
