@@ -438,6 +438,19 @@ nav {
     display: block;
 }
 
+@media (max-width: 768px) {
+    .experience-badge {
+        bottom: -50px;
+        right: 20px;
+        transform: none;
+        margin-bottom: 0;
+    }
+    
+    .about-text {
+        margin-top: 20px;
+    }
+}
+
 /* Projects Section */
 .projects {
     padding: 6rem 5%;
